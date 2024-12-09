@@ -18,7 +18,9 @@ export function UserDashboard({ user }: { user: User }) {
   const { user: clerkUser } = useUser();
   const firstName = clerkUser?.firstName || clerkUser?.username || "Guest";
   return (
+
     <div className="container mx-auto px-4 py-8">
+
       <Card className="mb-8 p-6">
         <div className="flex items-center justify-between">
           <div>
@@ -41,12 +43,15 @@ export function UserDashboard({ user }: { user: User }) {
           </div>
         </div>
       </Card>
+
+
       <EventCard
         eventNumber={user.randomNumber}
-        date="26/11/2567"
-        time="12:00:00 - 16:00:00"
-        location="ณ บริเวณลาน หน้าห้อง Co-Working Space"
+        date="12-13 ธันวาคม 2567"
+        time="09:00 - 17:00 น."
+        location="ณ บริเวณลาน ห้องประชุมสำนักวิศวกรรม"
       />
     </div>
+    
   );
 }

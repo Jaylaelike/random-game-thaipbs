@@ -12,6 +12,16 @@ const config = {
   eslint: {
     ignoreDuringBuilds: true,
   },
+  images: {
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: 'res.cloudinary.com',
+        port: '',
+        pathname: '/satjay/image/upload/v1733721563/cxqnqrmly7ykkxcetml2.png',
+      },
+    ],
+  },
 };
 
 export default config;

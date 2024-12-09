@@ -5,6 +5,7 @@ import {
   Table,
   TableBody,
   TableCell,
+  TableFooter,
   TableHead,
   TableHeader,
   TableRow,
@@ -13,6 +14,7 @@ import { Badge } from "@/components/ui/badge";
 
 interface User {
   randomNumber: number;
+  name: string;
   email: string;
   role: string;
   createdAt: string;
@@ -22,6 +24,33 @@ interface User {
 interface AdminDashboardProps {
   currentUser: User;
   users: User[] | null;
+}
+
+function exportToCSV(users: User[]) {
+  const headers = ["Username", "Role", "Random Number", "Created At"];
+  const csvData = users.map((user) => [
+    user.name,
+    user.role,
+    user.randomNumber.toString(),
+    new Date(user.createdAt).toLocaleDateString("th-TH"),
+  ]);
+
+  const csvContent = [
+    headers.join(","),
+    ...csvData.map((row) => row.join(",")),
+  ].join("\n");
+
+  const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
+  const link = document.createElement("a");
+  const url = URL.createObjectURL(blob);
+
+  link.setAttribute("href", url);
+  link.setAttribute("download", "users.csv");
+  link.style.display = "none";
+
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
 }
 
 export function AdminDashboard({ currentUser, users }: AdminDashboardProps) {
@@ -47,7 +76,7 @@ export function AdminDashboard({ currentUser, users }: AdminDashboardProps) {
             <Table>
               <TableHeader>
                 <TableRow>
-                  <TableHead>Email</TableHead>
+                  <TableHead>Username</TableHead>
                   <TableHead>Role</TableHead>
                   <TableHead>Random Number</TableHead>
                   <TableHead>Created At</TableHead>
@@ -57,7 +86,7 @@ export function AdminDashboard({ currentUser, users }: AdminDashboardProps) {
               <TableBody>
                 {users?.map((user) => (
                   <TableRow key={user.id}>
-                    <TableCell>{user.email}</TableCell>
+                    <TableCell>{user.name}</TableCell>
                     <TableCell>
                       <Badge
                         variant={
@@ -74,6 +103,19 @@ export function AdminDashboard({ currentUser, users }: AdminDashboardProps) {
                   </TableRow>
                 ))}
               </TableBody>
+
+              <TableFooter>
+                <TableRow>
+                  <TableCell colSpan={4}>
+                    <button
+                      onClick={() => exportToCSV(users ?? [])}
+                      className="btn btn-primary"
+                    >
+                      Export to CSV
+                    </button>
+                  </TableCell>
+                </TableRow>
+              </TableFooter>
             </Table>
           </div>
         </div>
